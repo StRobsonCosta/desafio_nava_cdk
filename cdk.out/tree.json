@@ -1,0 +1,2240 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "VpcStack": {
+        "id": "VpcStack",
+        "path": "VpcStack",
+        "children": {
+          "nava-log-vpc": {
+            "id": "nava-log-vpc",
+            "path": "VpcStack/nava-log-vpc",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "VpcStack/nava-log-vpc/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::VPC",
+                  "aws:cdk:cloudformation:props": {
+                    "cidrBlock": "10.0.0.0/16",
+                    "enableDnsHostnames": true,
+                    "enableDnsSupport": true,
+                    "instanceTenancy": "default",
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": "VpcStack/nava-log-vpc"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnVPC",
+                  "version": "2.152.0"
+                }
+              },
+              "PublicSubnet1": {
+                "id": "PublicSubnet1",
+                "path": "VpcStack/nava-log-vpc/PublicSubnet1",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "VpcStack/nava-log-vpc/PublicSubnet1/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "availabilityZone": {
+                          "Fn::Select": [
+                            0,
+                            {
+                              "Fn::GetAZs": ""
+                            }
+                          ]
+                        },
+                        "cidrBlock": "10.0.0.0/18",
+                        "mapPublicIpOnLaunch": true,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "Public"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Public"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "VpcStack/nava-log-vpc/PublicSubnet1"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "navalogvpcFEC92251"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "VpcStack/nava-log-vpc/PublicSubnet1/Acl",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "VpcStack/nava-log-vpc/PublicSubnet1/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "VpcStack/nava-log-vpc/PublicSubnet1"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "navalogvpcFEC92251"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "VpcStack/nava-log-vpc/PublicSubnet1/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "navalogvpcPublicSubnet1RouteTableA5038510"
+                        },
+                        "subnetId": {
+                          "Ref": "navalogvpcPublicSubnet1SubnetD68AA293"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "VpcStack/nava-log-vpc/PublicSubnet1/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "gatewayId": {
+                          "Ref": "navalogvpcIGW3537970D"
+                        },
+                        "routeTableId": {
+                          "Ref": "navalogvpcPublicSubnet1RouteTableA5038510"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "EIP": {
+                    "id": "EIP",
+                    "path": "VpcStack/nava-log-vpc/PublicSubnet1/EIP",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::EIP",
+                      "aws:cdk:cloudformation:props": {
+                        "domain": "vpc",
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "VpcStack/nava-log-vpc/PublicSubnet1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnEIP",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "NATGateway": {
+                    "id": "NATGateway",
+                    "path": "VpcStack/nava-log-vpc/PublicSubnet1/NATGateway",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::NatGateway",
+                      "aws:cdk:cloudformation:props": {
+                        "allocationId": {
+                          "Fn::GetAtt": [
+                            "navalogvpcPublicSubnet1EIPECB8276F",
+                            "AllocationId"
+                          ]
+                        },
+                        "subnetId": {
+                          "Ref": "navalogvpcPublicSubnet1SubnetD68AA293"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "VpcStack/nava-log-vpc/PublicSubnet1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnNatGateway",
+                      "version": "2.152.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.PublicSubnet",
+                  "version": "2.152.0"
+                }
+              },
+              "PublicSubnet2": {
+                "id": "PublicSubnet2",
+                "path": "VpcStack/nava-log-vpc/PublicSubnet2",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "VpcStack/nava-log-vpc/PublicSubnet2/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "availabilityZone": {
+                          "Fn::Select": [
+                            1,
+                            {
+                              "Fn::GetAZs": ""
+                            }
+                          ]
+                        },
+                        "cidrBlock": "10.0.64.0/18",
+                        "mapPublicIpOnLaunch": true,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "Public"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Public"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "VpcStack/nava-log-vpc/PublicSubnet2"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "navalogvpcFEC92251"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "VpcStack/nava-log-vpc/PublicSubnet2/Acl",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "VpcStack/nava-log-vpc/PublicSubnet2/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "VpcStack/nava-log-vpc/PublicSubnet2"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "navalogvpcFEC92251"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "VpcStack/nava-log-vpc/PublicSubnet2/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "navalogvpcPublicSubnet2RouteTableBB4CACD8"
+                        },
+                        "subnetId": {
+                          "Ref": "navalogvpcPublicSubnet2SubnetA7FA7806"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "VpcStack/nava-log-vpc/PublicSubnet2/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "gatewayId": {
+                          "Ref": "navalogvpcIGW3537970D"
+                        },
+                        "routeTableId": {
+                          "Ref": "navalogvpcPublicSubnet2RouteTableBB4CACD8"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                      "version": "2.152.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.PublicSubnet",
+                  "version": "2.152.0"
+                }
+              },
+              "PrivateSubnet1": {
+                "id": "PrivateSubnet1",
+                "path": "VpcStack/nava-log-vpc/PrivateSubnet1",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "VpcStack/nava-log-vpc/PrivateSubnet1/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "availabilityZone": {
+                          "Fn::Select": [
+                            0,
+                            {
+                              "Fn::GetAZs": ""
+                            }
+                          ]
+                        },
+                        "cidrBlock": "10.0.128.0/18",
+                        "mapPublicIpOnLaunch": false,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "Private"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Private"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "VpcStack/nava-log-vpc/PrivateSubnet1"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "navalogvpcFEC92251"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "VpcStack/nava-log-vpc/PrivateSubnet1/Acl",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "VpcStack/nava-log-vpc/PrivateSubnet1/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "VpcStack/nava-log-vpc/PrivateSubnet1"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "navalogvpcFEC92251"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "VpcStack/nava-log-vpc/PrivateSubnet1/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "navalogvpcPrivateSubnet1RouteTable25117053"
+                        },
+                        "subnetId": {
+                          "Ref": "navalogvpcPrivateSubnet1Subnet755CCBA7"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "VpcStack/nava-log-vpc/PrivateSubnet1/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "natGatewayId": {
+                          "Ref": "navalogvpcPublicSubnet1NATGateway93CBA162"
+                        },
+                        "routeTableId": {
+                          "Ref": "navalogvpcPrivateSubnet1RouteTable25117053"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                      "version": "2.152.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
+                  "version": "2.152.0"
+                }
+              },
+              "PrivateSubnet2": {
+                "id": "PrivateSubnet2",
+                "path": "VpcStack/nava-log-vpc/PrivateSubnet2",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "VpcStack/nava-log-vpc/PrivateSubnet2/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "availabilityZone": {
+                          "Fn::Select": [
+                            1,
+                            {
+                              "Fn::GetAZs": ""
+                            }
+                          ]
+                        },
+                        "cidrBlock": "10.0.192.0/18",
+                        "mapPublicIpOnLaunch": false,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "Private"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Private"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "VpcStack/nava-log-vpc/PrivateSubnet2"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "navalogvpcFEC92251"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "VpcStack/nava-log-vpc/PrivateSubnet2/Acl",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "VpcStack/nava-log-vpc/PrivateSubnet2/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "VpcStack/nava-log-vpc/PrivateSubnet2"
+                          }
+                        ],
+                        "vpcId": {
+                          "Ref": "navalogvpcFEC92251"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "VpcStack/nava-log-vpc/PrivateSubnet2/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "navalogvpcPrivateSubnet2RouteTable5AED21A1"
+                        },
+                        "subnetId": {
+                          "Ref": "navalogvpcPrivateSubnet2SubnetAF0596B1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "VpcStack/nava-log-vpc/PrivateSubnet2/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "natGatewayId": {
+                          "Ref": "navalogvpcPublicSubnet1NATGateway93CBA162"
+                        },
+                        "routeTableId": {
+                          "Ref": "navalogvpcPrivateSubnet2RouteTable5AED21A1"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                      "version": "2.152.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
+                  "version": "2.152.0"
+                }
+              },
+              "IGW": {
+                "id": "IGW",
+                "path": "VpcStack/nava-log-vpc/IGW",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::InternetGateway",
+                  "aws:cdk:cloudformation:props": {
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": "VpcStack/nava-log-vpc"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnInternetGateway",
+                  "version": "2.152.0"
+                }
+              },
+              "VPCGW": {
+                "id": "VPCGW",
+                "path": "VpcStack/nava-log-vpc/VPCGW",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::VPCGatewayAttachment",
+                  "aws:cdk:cloudformation:props": {
+                    "internetGatewayId": {
+                      "Ref": "navalogvpcIGW3537970D"
+                    },
+                    "vpcId": {
+                      "Ref": "navalogvpcFEC92251"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnVPCGatewayAttachment",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.Vpc",
+              "version": "2.152.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "VpcStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "VpcStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.152.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "VpcStack/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "Exports": {
+            "id": "Exports",
+            "path": "VpcStack/Exports",
+            "children": {
+              "Output{\"Ref\":\"navalogvpcFEC92251\"}": {
+                "id": "Output{\"Ref\":\"navalogvpcFEC92251\"}",
+                "path": "VpcStack/Exports/Output{\"Ref\":\"navalogvpcFEC92251\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.152.0"
+                }
+              },
+              "Output{\"Ref\":\"navalogvpcPrivateSubnet1Subnet755CCBA7\"}": {
+                "id": "Output{\"Ref\":\"navalogvpcPrivateSubnet1Subnet755CCBA7\"}",
+                "path": "VpcStack/Exports/Output{\"Ref\":\"navalogvpcPrivateSubnet1Subnet755CCBA7\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.152.0"
+                }
+              },
+              "Output{\"Ref\":\"navalogvpcPrivateSubnet2SubnetAF0596B1\"}": {
+                "id": "Output{\"Ref\":\"navalogvpcPrivateSubnet2SubnetAF0596B1\"}",
+                "path": "VpcStack/Exports/Output{\"Ref\":\"navalogvpcPrivateSubnet2SubnetAF0596B1\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.152.0"
+                }
+              },
+              "Output{\"Ref\":\"navalogvpcPublicSubnet1SubnetD68AA293\"}": {
+                "id": "Output{\"Ref\":\"navalogvpcPublicSubnet1SubnetD68AA293\"}",
+                "path": "VpcStack/Exports/Output{\"Ref\":\"navalogvpcPublicSubnet1SubnetD68AA293\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.152.0"
+                }
+              },
+              "Output{\"Ref\":\"navalogvpcPublicSubnet2SubnetA7FA7806\"}": {
+                "id": "Output{\"Ref\":\"navalogvpcPublicSubnet2SubnetA7FA7806\"}",
+                "path": "VpcStack/Exports/Output{\"Ref\":\"navalogvpcPublicSubnet2SubnetA7FA7806\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "VpcStack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.152.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "VpcStack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.152.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.152.0"
+        }
+      },
+      "SecurityGroupStack": {
+        "id": "SecurityGroupStack",
+        "path": "SecurityGroupStack",
+        "children": {
+          "RdsSG": {
+            "id": "RdsSG",
+            "path": "SecurityGroupStack/RdsSG",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SecurityGroupStack/RdsSG/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "SecurityGroupStack/RdsSG",
+                    "securityGroupEgress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "description": "Allow all outbound traffic by default",
+                        "ipProtocol": "-1"
+                      }
+                    ],
+                    "vpcId": {
+                      "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                  "version": "2.152.0"
+                }
+              },
+              "from SecurityGroupStackEcsSG35FA6234:5432": {
+                "id": "from SecurityGroupStackEcsSG35FA6234:5432",
+                "path": "SecurityGroupStack/RdsSG/from SecurityGroupStackEcsSG35FA6234:5432",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupIngress",
+                  "aws:cdk:cloudformation:props": {
+                    "description": "Permitir acesso do ECS ao RDS",
+                    "fromPort": 5432,
+                    "groupId": {
+                      "Fn::GetAtt": [
+                        "RdsSG7A20FFA2",
+                        "GroupId"
+                      ]
+                    },
+                    "ipProtocol": "tcp",
+                    "sourceSecurityGroupId": {
+                      "Fn::GetAtt": [
+                        "EcsSGAFCFCDDA",
+                        "GroupId"
+                      ]
+                    },
+                    "toPort": 5432
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroupIngress",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+              "version": "2.152.0"
+            }
+          },
+          "EcsSG": {
+            "id": "EcsSG",
+            "path": "SecurityGroupStack/EcsSG",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SecurityGroupStack/EcsSG/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "SecurityGroupStack/EcsSG",
+                    "securityGroupEgress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "description": "Allow all outbound traffic by default",
+                        "ipProtocol": "-1"
+                      }
+                    ],
+                    "vpcId": {
+                      "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                  "version": "2.152.0"
+                }
+              },
+              "from EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081": {
+                "id": "from EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081",
+                "path": "SecurityGroupStack/EcsSG/from EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupIngress",
+                  "aws:cdk:cloudformation:props": {
+                    "description": "Load balancer to target",
+                    "fromPort": 8081,
+                    "groupId": {
+                      "Fn::GetAtt": [
+                        "EcsSGAFCFCDDA",
+                        "GroupId"
+                      ]
+                    },
+                    "ipProtocol": "tcp",
+                    "sourceSecurityGroupId": {
+                      "Fn::ImportValue": "EcsClusterStack:ExportsOutputFnGetAttSpringBootFargateServiceLBSecurityGroup631B6D5FGroupId2A072C90"
+                    },
+                    "toPort": 8081
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroupIngress",
+                  "version": "2.152.0"
+                }
+              },
+              "EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081 from": {
+                "id": "EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081 from",
+                "path": "SecurityGroupStack/EcsSG/EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081 from",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupEgress",
+                  "aws:cdk:cloudformation:props": {
+                    "description": "Load balancer to target",
+                    "destinationSecurityGroupId": {
+                      "Fn::GetAtt": [
+                        "EcsSGAFCFCDDA",
+                        "GroupId"
+                      ]
+                    },
+                    "fromPort": 8081,
+                    "groupId": {
+                      "Fn::ImportValue": "EcsClusterStack:ExportsOutputFnGetAttSpringBootFargateServiceLBSecurityGroup631B6D5FGroupId2A072C90"
+                    },
+                    "ipProtocol": "tcp",
+                    "toPort": 8081
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroupEgress",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+              "version": "2.152.0"
+            }
+          },
+          "LbSG": {
+            "id": "LbSG",
+            "path": "SecurityGroupStack/LbSG",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SecurityGroupStack/LbSG/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "SecurityGroupStack/LbSG",
+                    "securityGroupEgress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "description": "Allow all outbound traffic by default",
+                        "ipProtocol": "-1"
+                      }
+                    ],
+                    "vpcId": {
+                      "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+              "version": "2.152.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "SecurityGroupStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "SecurityGroupStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.152.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "SecurityGroupStack/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "Exports": {
+            "id": "Exports",
+            "path": "SecurityGroupStack/Exports",
+            "children": {
+              "Output{\"Fn::GetAtt\":[\"RdsSG7A20FFA2\",\"GroupId\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"RdsSG7A20FFA2\",\"GroupId\"]}",
+                "path": "SecurityGroupStack/Exports/Output{\"Fn::GetAtt\":[\"RdsSG7A20FFA2\",\"GroupId\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "SecurityGroupStack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.152.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "SecurityGroupStack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.152.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.152.0"
+        }
+      },
+      "RdsStack": {
+        "id": "RdsStack",
+        "path": "RdsStack",
+        "children": {
+          "NavaLogDbSecret": {
+            "id": "NavaLogDbSecret",
+            "path": "RdsStack/NavaLogDbSecret",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "RdsStack/NavaLogDbSecret/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SecretsManager::Secret",
+                  "aws:cdk:cloudformation:props": {
+                    "generateSecretString": {
+                      "excludePunctuation": true,
+                      "generateStringKey": "password",
+                      "secretStringTemplate": "{\"username\": \"postgres\"}"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_secretsmanager.CfnSecret",
+                  "version": "2.152.0"
+                }
+              },
+              "Attachment": {
+                "id": "Attachment",
+                "path": "RdsStack/NavaLogDbSecret/Attachment",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "RdsStack/NavaLogDbSecret/Attachment/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SecretsManager::SecretTargetAttachment",
+                      "aws:cdk:cloudformation:props": {
+                        "secretId": {
+                          "Ref": "NavaLogDbSecretA61081F6"
+                        },
+                        "targetId": {
+                          "Ref": "NavaLogDbInstance6D593EF8"
+                        },
+                        "targetType": "AWS::RDS::DBInstance"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_secretsmanager.CfnSecretTargetAttachment",
+                      "version": "2.152.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_secretsmanager.SecretTargetAttachment",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_secretsmanager.Secret",
+              "version": "2.152.0"
+            }
+          },
+          "NavaLogDbInstance": {
+            "id": "NavaLogDbInstance",
+            "path": "RdsStack/NavaLogDbInstance",
+            "children": {
+              "SubnetGroup": {
+                "id": "SubnetGroup",
+                "path": "RdsStack/NavaLogDbInstance/SubnetGroup",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "RdsStack/NavaLogDbInstance/SubnetGroup/Default",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::RDS::DBSubnetGroup",
+                      "aws:cdk:cloudformation:props": {
+                        "dbSubnetGroupDescription": "Subnet group for NavaLogDbInstance database",
+                        "subnetIds": [
+                          {
+                            "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcPrivateSubnet1Subnet755CCBA7E36229AD"
+                          },
+                          {
+                            "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcPrivateSubnet2SubnetAF0596B1E9F0B841"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_rds.CfnDBSubnetGroup",
+                      "version": "2.152.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_rds.SubnetGroup",
+                  "version": "2.152.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "RdsStack/NavaLogDbInstance/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::RDS::DBInstance",
+                  "aws:cdk:cloudformation:props": {
+                    "allocatedStorage": "20",
+                    "copyTagsToSnapshot": true,
+                    "dbInstanceClass": "db.t3.micro",
+                    "dbName": "nava_log",
+                    "dbSubnetGroupName": {
+                      "Ref": "NavaLogDbInstanceSubnetGroupEBA1525C"
+                    },
+                    "engine": "postgres",
+                    "engineVersion": "15.3",
+                    "masterUsername": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "{{resolve:secretsmanager:",
+                          {
+                            "Ref": "NavaLogDbSecretA61081F6"
+                          },
+                          ":SecretString:username::}}"
+                        ]
+                      ]
+                    },
+                    "masterUserPassword": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "{{resolve:secretsmanager:",
+                          {
+                            "Ref": "NavaLogDbSecretA61081F6"
+                          },
+                          ":SecretString:password::}}"
+                        ]
+                      ]
+                    },
+                    "multiAz": false,
+                    "publiclyAccessible": false,
+                    "storageType": "gp2",
+                    "vpcSecurityGroups": [
+                      {
+                        "Fn::ImportValue": "SecurityGroupStack:ExportsOutputFnGetAttRdsSG7A20FFA2GroupId577EBECA"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_rds.CfnDBInstance",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_rds.DatabaseInstance",
+              "version": "2.152.0"
+            }
+          },
+          "RdsEndpoint": {
+            "id": "RdsEndpoint",
+            "path": "RdsStack/RdsEndpoint",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.152.0"
+            }
+          },
+          "DbSecretName": {
+            "id": "DbSecretName",
+            "path": "RdsStack/DbSecretName",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.152.0"
+            }
+          },
+          "DbSecretPassword": {
+            "id": "DbSecretPassword",
+            "path": "RdsStack/DbSecretPassword",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.152.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "RdsStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "RdsStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.152.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "RdsStack/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "RdsStack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.152.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "RdsStack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.152.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.152.0"
+        }
+      },
+      "DynamoDbStack": {
+        "id": "DynamoDbStack",
+        "path": "DynamoDbStack",
+        "children": {
+          "nava-log": {
+            "id": "nava-log",
+            "path": "DynamoDbStack/nava-log",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "DynamoDbStack/nava-log/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "shipmentId",
+                        "attributeType": "S"
+                      },
+                      {
+                        "attributeName": "timestamp",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "billingMode": "PAY_PER_REQUEST",
+                    "keySchema": [
+                      {
+                        "attributeName": "shipmentId",
+                        "keyType": "HASH"
+                      },
+                      {
+                        "attributeName": "timestamp",
+                        "keyType": "RANGE"
+                      }
+                    ],
+                    "tableName": "nava-log"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.152.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "DynamoDbStack/nava-log/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.152.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "DynamoDbStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "DynamoDbStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.152.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "DynamoDbStack/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "Exports": {
+            "id": "Exports",
+            "path": "DynamoDbStack/Exports",
+            "children": {
+              "Output{\"Ref\":\"navalog37BF5FE3\"}": {
+                "id": "Output{\"Ref\":\"navalog37BF5FE3\"}",
+                "path": "DynamoDbStack/Exports/Output{\"Ref\":\"navalog37BF5FE3\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "DynamoDbStack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.152.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "DynamoDbStack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.152.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.152.0"
+        }
+      },
+      "EcrStack": {
+        "id": "EcrStack",
+        "path": "EcrStack",
+        "children": {
+          "nava-log-ecr": {
+            "id": "nava-log-ecr",
+            "path": "EcrStack/nava-log-ecr",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "EcrStack/nava-log-ecr/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ECR::Repository",
+                  "aws:cdk:cloudformation:props": {
+                    "repositoryName": "nava-log-app"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ecr.CfnRepository",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ecr.Repository",
+              "version": "2.152.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "EcrStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "EcrStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.152.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "EcrStack/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "Exports": {
+            "id": "Exports",
+            "path": "EcrStack/Exports",
+            "children": {
+              "Output{\"Fn::GetAtt\":[\"navalogecrAA539A37\",\"Arn\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"navalogecrAA539A37\",\"Arn\"]}",
+                "path": "EcrStack/Exports/Output{\"Fn::GetAtt\":[\"navalogecrAA539A37\",\"Arn\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.152.0"
+                }
+              },
+              "Output{\"Ref\":\"navalogecrAA539A37\"}": {
+                "id": "Output{\"Ref\":\"navalogecrAA539A37\"}",
+                "path": "EcrStack/Exports/Output{\"Ref\":\"navalogecrAA539A37\"}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "EcrStack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.152.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "EcrStack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.152.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.152.0"
+        }
+      },
+      "EcsClusterStack": {
+        "id": "EcsClusterStack",
+        "path": "EcsClusterStack",
+        "children": {
+          "EcsCluster": {
+            "id": "EcsCluster",
+            "path": "EcsClusterStack/EcsCluster",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "EcsClusterStack/EcsCluster/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ECS::Cluster",
+                  "aws:cdk:cloudformation:props": {
+                    "clusterName": "nava-log-cluster"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ecs.CfnCluster",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ecs.Cluster",
+              "version": "2.152.0"
+            }
+          },
+          "EcsExecutionRole": {
+            "id": "EcsExecutionRole",
+            "path": "EcsClusterStack/EcsExecutionRole",
+            "children": {
+              "ImportEcsExecutionRole": {
+                "id": "ImportEcsExecutionRole",
+                "path": "EcsClusterStack/EcsExecutionRole/ImportEcsExecutionRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.152.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "EcsClusterStack/EcsExecutionRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "ecs-tasks.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/CloudWatchLogsFullAccess"
+                          ]
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.152.0"
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "EcsClusterStack/EcsExecutionRole/DefaultPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "EcsClusterStack/EcsExecutionRole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "ecr:BatchCheckLayerAvailability",
+                                "ecr:GetDownloadUrlForLayer",
+                                "ecr:BatchGetImage"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::ImportValue": "EcrStack:ExportsOutputFnGetAttnavalogecrAA539A37Arn8E805FAC"
+                              }
+                            },
+                            {
+                              "Action": "ecr:GetAuthorizationToken",
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "EcsExecutionRoleDefaultPolicy9114F99B",
+                        "roles": [
+                          {
+                            "Ref": "EcsExecutionRoleFD93B7A2"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                      "version": "2.152.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_iam.Role",
+              "version": "2.152.0"
+            }
+          },
+          "EcsTaskRole": {
+            "id": "EcsTaskRole",
+            "path": "EcsClusterStack/EcsTaskRole",
+            "children": {
+              "ImportEcsTaskRole": {
+                "id": "ImportEcsTaskRole",
+                "path": "EcsClusterStack/EcsTaskRole/ImportEcsTaskRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.152.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "EcsClusterStack/EcsTaskRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "ecs-tasks.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/AmazonDynamoDBFullAccess"
+                          ]
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_iam.Role",
+              "version": "2.152.0"
+            }
+          },
+          "TaskDef": {
+            "id": "TaskDef",
+            "path": "EcsClusterStack/TaskDef",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "EcsClusterStack/TaskDef/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ECS::TaskDefinition",
+                  "aws:cdk:cloudformation:props": {
+                    "containerDefinitions": [
+                      {
+                        "cpu": 512,
+                        "essential": true,
+                        "image": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              {
+                                "Fn::Select": [
+                                  4,
+                                  {
+                                    "Fn::Split": [
+                                      ":",
+                                      {
+                                        "Fn::ImportValue": "EcrStack:ExportsOutputFnGetAttnavalogecrAA539A37Arn8E805FAC"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              ".dkr.ecr.",
+                              {
+                                "Fn::Select": [
+                                  3,
+                                  {
+                                    "Fn::Split": [
+                                      ":",
+                                      {
+                                        "Fn::ImportValue": "EcrStack:ExportsOutputFnGetAttnavalogecrAA539A37Arn8E805FAC"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              ".",
+                              {
+                                "Ref": "AWS::URLSuffix"
+                              },
+                              "/",
+                              {
+                                "Fn::ImportValue": "EcrStack:ExportsOutputRefnavalogecrAA539A372A777D50"
+                              },
+                              ":latest"
+                            ]
+                          ]
+                        },
+                        "memory": 1024,
+                        "name": "SpringBootContainer",
+                        "portMappings": [
+                          {
+                            "containerPort": 8081,
+                            "protocol": "tcp"
+                          }
+                        ],
+                        "environment": [
+                          {
+                            "name": "DYNAMODB_TABLE_NAME",
+                            "value": {
+                              "Fn::ImportValue": "DynamoDbStack:ExportsOutputRefnavalog37BF5FE37DB565A1"
+                            }
+                          },
+                          {
+                            "name": "DB_PASSWORD",
+                            "value": {
+                              "Fn::ImportValue": "DbSecretPassword"
+                            }
+                          },
+                          {
+                            "name": "DB_URL",
+                            "value": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "jdbc:postgresql://",
+                                  {
+                                    "Fn::ImportValue": "RdsEndpoint"
+                                  },
+                                  ":5432/nava_log"
+                                ]
+                              ]
+                            }
+                          },
+                          {
+                            "name": "DB_USERNAME",
+                            "value": {
+                              "Fn::ImportValue": "DbSecretName"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "command": [
+                          "--verbose"
+                        ],
+                        "cpu": 128,
+                        "essential": true,
+                        "image": "wiremock/wiremock:latest",
+                        "memory": 256,
+                        "name": "nava-log-wiremock",
+                        "portMappings": [
+                          {
+                            "containerPort": 9090,
+                            "protocol": "tcp"
+                          }
+                        ]
+                      }
+                    ],
+                    "cpu": "1024",
+                    "executionRoleArn": {
+                      "Fn::GetAtt": [
+                        "EcsExecutionRoleFD93B7A2",
+                        "Arn"
+                      ]
+                    },
+                    "family": "EcsClusterStackTaskDef6310E1EE",
+                    "memory": "2048",
+                    "networkMode": "awsvpc",
+                    "requiresCompatibilities": [
+                      "FARGATE"
+                    ],
+                    "taskRoleArn": {
+                      "Fn::GetAtt": [
+                        "EcsTaskRole8DFA0181",
+                        "Arn"
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ecs.CfnTaskDefinition",
+                  "version": "2.152.0"
+                }
+              },
+              "SpringBootContainer": {
+                "id": "SpringBootContainer",
+                "path": "EcsClusterStack/TaskDef/SpringBootContainer",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ecs.ContainerDefinition",
+                  "version": "2.152.0"
+                }
+              },
+              "nava-log-wiremock": {
+                "id": "nava-log-wiremock",
+                "path": "EcsClusterStack/TaskDef/nava-log-wiremock",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ecs.ContainerDefinition",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ecs.FargateTaskDefinition",
+              "version": "2.152.0"
+            }
+          },
+          "SpringBootFargateService": {
+            "id": "SpringBootFargateService",
+            "path": "EcsClusterStack/SpringBootFargateService",
+            "children": {
+              "LB": {
+                "id": "LB",
+                "path": "EcsClusterStack/SpringBootFargateService/LB",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "EcsClusterStack/SpringBootFargateService/LB/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+                      "aws:cdk:cloudformation:props": {
+                        "loadBalancerAttributes": [
+                          {
+                            "key": "deletion_protection.enabled",
+                            "value": "false"
+                          }
+                        ],
+                        "scheme": "internet-facing",
+                        "securityGroups": [
+                          {
+                            "Fn::GetAtt": [
+                              "SpringBootFargateServiceLBSecurityGroup631B6D5F",
+                              "GroupId"
+                            ]
+                          }
+                        ],
+                        "subnets": [
+                          {
+                            "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcPublicSubnet1SubnetD68AA293F159CD55"
+                          },
+                          {
+                            "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcPublicSubnet2SubnetA7FA78063CF0E934"
+                          }
+                        ],
+                        "type": "application"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnLoadBalancer",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "SecurityGroup": {
+                    "id": "SecurityGroup",
+                    "path": "EcsClusterStack/SpringBootFargateService/LB/SecurityGroup",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "EcsClusterStack/SpringBootFargateService/LB/SecurityGroup/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                          "aws:cdk:cloudformation:props": {
+                            "groupDescription": "Automatically created Security Group for ELB EcsClusterStackSpringBootFargateServiceLBBFB8A185",
+                            "securityGroupIngress": [
+                              {
+                                "cidrIp": "0.0.0.0/0",
+                                "ipProtocol": "tcp",
+                                "fromPort": 80,
+                                "toPort": 80,
+                                "description": "Allow from anyone on port 80"
+                              }
+                            ],
+                            "vpcId": {
+                              "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                          "version": "2.152.0"
+                        }
+                      },
+                      "to EcsClusterStackSpringBootFargateServiceSecurityGroupE2D61429:8081": {
+                        "id": "to EcsClusterStackSpringBootFargateServiceSecurityGroupE2D61429:8081",
+                        "path": "EcsClusterStack/SpringBootFargateService/LB/SecurityGroup/to EcsClusterStackSpringBootFargateServiceSecurityGroupE2D61429:8081",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupEgress",
+                          "aws:cdk:cloudformation:props": {
+                            "description": "Load balancer to target",
+                            "destinationSecurityGroupId": {
+                              "Fn::GetAtt": [
+                                "SpringBootFargateServiceSecurityGroupA68A4C3D",
+                                "GroupId"
+                              ]
+                            },
+                            "fromPort": 8081,
+                            "groupId": {
+                              "Fn::GetAtt": [
+                                "SpringBootFargateServiceLBSecurityGroup631B6D5F",
+                                "GroupId"
+                              ]
+                            },
+                            "ipProtocol": "tcp",
+                            "toPort": 8081
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroupEgress",
+                          "version": "2.152.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "PublicListener": {
+                    "id": "PublicListener",
+                    "path": "EcsClusterStack/SpringBootFargateService/LB/PublicListener",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "EcsClusterStack/SpringBootFargateService/LB/PublicListener/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::Listener",
+                          "aws:cdk:cloudformation:props": {
+                            "defaultActions": [
+                              {
+                                "type": "forward",
+                                "targetGroupArn": {
+                                  "Ref": "SpringBootFargateServiceLBPublicListenerECSGroup1F3F45D8"
+                                }
+                              }
+                            ],
+                            "loadBalancerArn": {
+                              "Ref": "SpringBootFargateServiceLB40691197"
+                            },
+                            "port": 80,
+                            "protocol": "HTTP"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnListener",
+                          "version": "2.152.0"
+                        }
+                      },
+                      "ECSGroup": {
+                        "id": "ECSGroup",
+                        "path": "EcsClusterStack/SpringBootFargateService/LB/PublicListener/ECSGroup",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "EcsClusterStack/SpringBootFargateService/LB/PublicListener/ECSGroup/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+                              "aws:cdk:cloudformation:props": {
+                                "port": 80,
+                                "protocol": "HTTP",
+                                "targetGroupAttributes": [
+                                  {
+                                    "key": "stickiness.enabled",
+                                    "value": "false"
+                                  }
+                                ],
+                                "targetType": "ip",
+                                "vpcId": {
+                                  "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnTargetGroup",
+                              "version": "2.152.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationTargetGroup",
+                          "version": "2.152.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationListener",
+                      "version": "2.152.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationLoadBalancer",
+                  "version": "2.152.0"
+                }
+              },
+              "LoadBalancerDNS": {
+                "id": "LoadBalancerDNS",
+                "path": "EcsClusterStack/SpringBootFargateService/LoadBalancerDNS",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.152.0"
+                }
+              },
+              "ServiceURL": {
+                "id": "ServiceURL",
+                "path": "EcsClusterStack/SpringBootFargateService/ServiceURL",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.152.0"
+                }
+              },
+              "Service": {
+                "id": "Service",
+                "path": "EcsClusterStack/SpringBootFargateService/Service",
+                "children": {
+                  "Service": {
+                    "id": "Service",
+                    "path": "EcsClusterStack/SpringBootFargateService/Service/Service",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ECS::Service",
+                      "aws:cdk:cloudformation:props": {
+                        "cluster": {
+                          "Ref": "EcsCluster97242B84"
+                        },
+                        "deploymentConfiguration": {
+                          "maximumPercent": 200,
+                          "minimumHealthyPercent": 50,
+                          "alarms": {
+                            "alarmNames": [],
+                            "enable": false,
+                            "rollback": false
+                          }
+                        },
+                        "desiredCount": 2,
+                        "enableEcsManagedTags": false,
+                        "healthCheckGracePeriodSeconds": 60,
+                        "launchType": "FARGATE",
+                        "loadBalancers": [
+                          {
+                            "targetGroupArn": {
+                              "Ref": "SpringBootFargateServiceLBPublicListenerECSGroup1F3F45D8"
+                            },
+                            "containerName": "SpringBootContainer",
+                            "containerPort": 8081
+                          }
+                        ],
+                        "networkConfiguration": {
+                          "awsvpcConfiguration": {
+                            "assignPublicIp": "DISABLED",
+                            "subnets": [
+                              {
+                                "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcPrivateSubnet1Subnet755CCBA7E36229AD"
+                              },
+                              {
+                                "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcPrivateSubnet2SubnetAF0596B1E9F0B841"
+                              }
+                            ],
+                            "securityGroups": [
+                              {
+                                "Fn::GetAtt": [
+                                  "SpringBootFargateServiceSecurityGroupA68A4C3D",
+                                  "GroupId"
+                                ]
+                              }
+                            ]
+                          }
+                        },
+                        "serviceName": "nava-log-service",
+                        "taskDefinition": {
+                          "Ref": "TaskDef54694570"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ecs.CfnService",
+                      "version": "2.152.0"
+                    }
+                  },
+                  "SecurityGroup": {
+                    "id": "SecurityGroup",
+                    "path": "EcsClusterStack/SpringBootFargateService/Service/SecurityGroup",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "EcsClusterStack/SpringBootFargateService/Service/SecurityGroup/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                          "aws:cdk:cloudformation:props": {
+                            "groupDescription": "EcsClusterStack/SpringBootFargateService/Service/SecurityGroup",
+                            "securityGroupEgress": [
+                              {
+                                "cidrIp": "0.0.0.0/0",
+                                "description": "Allow all outbound traffic by default",
+                                "ipProtocol": "-1"
+                              }
+                            ],
+                            "vpcId": {
+                              "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                          "version": "2.152.0"
+                        }
+                      },
+                      "from EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081": {
+                        "id": "from EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081",
+                        "path": "EcsClusterStack/SpringBootFargateService/Service/SecurityGroup/from EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroupIngress",
+                          "aws:cdk:cloudformation:props": {
+                            "description": "Load balancer to target",
+                            "fromPort": 8081,
+                            "groupId": {
+                              "Fn::GetAtt": [
+                                "SpringBootFargateServiceSecurityGroupA68A4C3D",
+                                "GroupId"
+                              ]
+                            },
+                            "ipProtocol": "tcp",
+                            "sourceSecurityGroupId": {
+                              "Fn::GetAtt": [
+                                "SpringBootFargateServiceLBSecurityGroup631B6D5F",
+                                "GroupId"
+                              ]
+                            },
+                            "toPort": 8081
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroupIngress",
+                          "version": "2.152.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+                      "version": "2.152.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ecs.FargateService",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ecs_patterns.ApplicationLoadBalancedFargateService",
+              "version": "2.152.0"
+            }
+          },
+          "EcsLogGroup": {
+            "id": "EcsLogGroup",
+            "path": "EcsClusterStack/EcsLogGroup",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "EcsClusterStack/EcsLogGroup/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "logGroupName": "SpringBootEcsLogs",
+                    "retentionInDays": 731
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_logs.LogGroup",
+              "version": "2.152.0"
+            }
+          },
+          "LoadBalancerDNS": {
+            "id": "LoadBalancerDNS",
+            "path": "EcsClusterStack/LoadBalancerDNS",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.152.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "EcsClusterStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "EcsClusterStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.152.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "EcsClusterStack/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "Exports": {
+            "id": "Exports",
+            "path": "EcsClusterStack/Exports",
+            "children": {
+              "Output{\"Fn::GetAtt\":[\"SpringBootFargateServiceLBSecurityGroup631B6D5F\",\"GroupId\"]}": {
+                "id": "Output{\"Fn::GetAtt\":[\"SpringBootFargateServiceLBSecurityGroup631B6D5F\",\"GroupId\"]}",
+                "path": "EcsClusterStack/Exports/Output{\"Fn::GetAtt\":[\"SpringBootFargateServiceLBSecurityGroup631B6D5F\",\"GroupId\"]}",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.152.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "EcsClusterStack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.152.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "EcsClusterStack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.152.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.152.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.4.2"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.152.0"
+    }
+  }
+}

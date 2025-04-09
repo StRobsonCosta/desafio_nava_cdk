@@ -1,0 +1,680 @@
+{
+ "Resources": {
+  "navalogecssg6FE48BA7": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "EcsServiceStack/nava-log-ecs-sg",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/nava-log-ecs-sg/Resource"
+   }
+  },
+  "navalogserviceLBCD5A61D1": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "navalogserviceLBSecurityGroup67C42590",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcPublicSubnet1SubnetD68AA293F159CD55"
+     },
+     {
+      "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcPublicSubnet2SubnetA7FA78063CF0E934"
+     }
+    ],
+    "Type": "application"
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/nava-log-service/LB/Resource"
+   }
+  },
+  "navalogserviceLBSecurityGroup67C42590": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Automatically created Security Group for ELB EcsServiceStacknavalogserviceLB3D8BC7D7",
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow from anyone on port 80",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/nava-log-service/LB/SecurityGroup/Resource"
+   }
+  },
+  "navalogserviceLBSecurityGrouptoEcsServiceStacknavalogserviceServiceSecurityGroup0AA475FE8081A98BCCC1": {
+   "Type": "AWS::EC2::SecurityGroupEgress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "DestinationSecurityGroupId": {
+     "Fn::GetAtt": [
+      "navalogserviceServiceSecurityGroup9A0642CB",
+      "GroupId"
+     ]
+    },
+    "FromPort": 8081,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "navalogserviceLBSecurityGroup67C42590",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "ToPort": 8081
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/nava-log-service/LB/SecurityGroup/to EcsServiceStacknavalogserviceServiceSecurityGroup0AA475FE:8081"
+   }
+  },
+  "navalogserviceLBPublicListener7FA08884": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "navalogserviceLBPublicListenerECSGroup61BD1722"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "navalogserviceLBCD5A61D1"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/nava-log-service/LB/PublicListener/Resource"
+   }
+  },
+  "navalogserviceLBPublicListenerECSGroup61BD1722": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/nava-log-service/LB/PublicListener/ECSGroup/Resource"
+   }
+  },
+  "navalogserviceTaskDefTaskRoleF3460A8A": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/nava-log-service/TaskDef/TaskRole/Resource"
+   }
+  },
+  "navalogserviceTaskDefE546C943": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Essential": true,
+      "Image": "nava-log-ecr",
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "navalogserviceTaskDefwebLogGroup9A6E12AD"
+        },
+        "awslogs-stream-prefix": "nava-log-service",
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        }
+       }
+      },
+      "Name": "web",
+      "PortMappings": [
+       {
+        "ContainerPort": 8081,
+        "Protocol": "tcp"
+       }
+      ]
+     },
+     {
+      "Command": [
+       "--verbose"
+      ],
+      "Cpu": 128,
+      "Essential": true,
+      "Image": "wiremock/wiremock:latest",
+      "Memory": 256,
+      "Name": "nava-log-wiremock",
+      "PortMappings": [
+       {
+        "ContainerPort": 9090,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "512",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "navalogserviceTaskDefExecutionRole311F98BC",
+      "Arn"
+     ]
+    },
+    "Family": "EcsServiceStacknavalogserviceTaskDefFADDF88E",
+    "Memory": "1024",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "navalogserviceTaskDefTaskRoleF3460A8A",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/nava-log-service/TaskDef/Resource"
+   }
+  },
+  "navalogserviceTaskDefwebLogGroup9A6E12AD": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/nava-log-service/TaskDef/web/LogGroup/Resource"
+   }
+  },
+  "navalogserviceTaskDefExecutionRole311F98BC": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/nava-log-service/TaskDef/ExecutionRole/Resource"
+   }
+  },
+  "navalogserviceTaskDefExecutionRoleDefaultPolicy7F2C1463": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "navalogserviceTaskDefwebLogGroup9A6E12AD",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "navalogserviceTaskDefExecutionRoleDefaultPolicy7F2C1463",
+    "Roles": [
+     {
+      "Ref": "navalogserviceTaskDefExecutionRole311F98BC"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/nava-log-service/TaskDef/ExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "navalogserviceService01DB36CC": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Fn::ImportValue": "EcsClusterStack:ExportsOutputRefnavalogcluster9E7E477E95C84237"
+    },
+    "DeploymentConfiguration": {
+     "Alarms": {
+      "AlarmNames": [],
+      "Enable": false,
+      "Rollback": false
+     },
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 2,
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "web",
+      "ContainerPort": 8081,
+      "TargetGroupArn": {
+       "Ref": "navalogserviceLBPublicListenerECSGroup61BD1722"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "navalogserviceServiceSecurityGroup9A0642CB",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcPrivateSubnet1Subnet755CCBA7E36229AD"
+       },
+       {
+        "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcPrivateSubnet2SubnetAF0596B1E9F0B841"
+       }
+      ]
+     }
+    },
+    "TaskDefinition": {
+     "Ref": "navalogserviceTaskDefE546C943"
+    }
+   },
+   "DependsOn": [
+    "navalogserviceLBPublicListenerECSGroup61BD1722",
+    "navalogserviceLBPublicListener7FA08884",
+    "navalogserviceTaskDefTaskRoleF3460A8A"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/nava-log-service/Service/Service"
+   }
+  },
+  "navalogserviceServiceSecurityGroup9A0642CB": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "EcsServiceStack/nava-log-service/Service/SecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+    }
+   },
+   "DependsOn": [
+    "navalogserviceTaskDefTaskRoleF3460A8A"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/nava-log-service/Service/SecurityGroup/Resource"
+   }
+  },
+  "navalogserviceServiceSecurityGroupfromEcsServiceStacknavalogserviceLBSecurityGroupFAA328308081DE48B6A3": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "FromPort": 8081,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "navalogserviceServiceSecurityGroup9A0642CB",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "navalogserviceLBSecurityGroup67C42590",
+      "GroupId"
+     ]
+    },
+    "ToPort": 8081
+   },
+   "DependsOn": [
+    "navalogserviceTaskDefTaskRoleF3460A8A"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/nava-log-service/Service/SecurityGroup/from EcsServiceStacknavalogserviceLBSecurityGroupFAA32830:8081"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31Q0U7DMAz8lr2nYauEeIbBEGgSqN375KVeZJolVeJ2mqL+O2q6TR0gnnx3Pidn53Jxn8v5DI4hU1WdGdrJWDKoWsAxbCOqXMYSVeuJT6/etY1Y7u3/wov2GMIv+c0mvReowrYBZvQ2yMemMaSAydm1g+oJDFiF1Qq8BsYSfUcKBRoITMo4qHbJQVZ3uYx/T/vh7xs+9VFgtGfPBU/6G/Aa+brZhKbkMp6jbSDUz7gnS8PUaL1VnGUgi36i/VgrnSjBXhAcZCycSWqqn86QOg10RL0wTgcZ105f411w3w/so+WmZVFgcK0f35/ipbNVytGLd+jgbvEg5zKffQWizLeW6YCyGOs31KNShBgCAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsServiceStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "navalogserviceLoadBalancerDNS087EA6CB": {
+   "Value": {
+    "Fn::GetAtt": [
+     "navalogserviceLBCD5A61D1",
+     "DNSName"
+    ]
+   }
+  },
+  "navalogserviceServiceURL3F6CDF8F": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "http://",
+      {
+       "Fn::GetAtt": [
+        "navalogserviceLBCD5A61D1",
+        "DNSName"
+       ]
+      }
+     ]
+    ]
+   }
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

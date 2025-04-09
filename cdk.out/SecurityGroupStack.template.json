@@ -1,0 +1,394 @@
+{
+ "Resources": {
+  "RdsSG7A20FFA2": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "SecurityGroupStack/RdsSG",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SecurityGroupStack/RdsSG/Resource"
+   }
+  },
+  "RdsSGfromSecurityGroupStackEcsSG35FA62345432D2A0925B": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Permitir acesso do ECS ao RDS",
+    "FromPort": 5432,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "RdsSG7A20FFA2",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "EcsSGAFCFCDDA",
+      "GroupId"
+     ]
+    },
+    "ToPort": 5432
+   },
+   "Metadata": {
+    "aws:cdk:path": "SecurityGroupStack/RdsSG/from SecurityGroupStackEcsSG35FA6234:5432"
+   }
+  },
+  "EcsSGAFCFCDDA": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "SecurityGroupStack/EcsSG",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SecurityGroupStack/EcsSG/Resource"
+   }
+  },
+  "EcsSGfromEcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE44980813821913B": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "FromPort": 8081,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "EcsSGAFCFCDDA",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::ImportValue": "EcsClusterStack:ExportsOutputFnGetAttSpringBootFargateServiceLBSecurityGroup631B6D5FGroupId2A072C90"
+    },
+    "ToPort": 8081
+   },
+   "Metadata": {
+    "aws:cdk:path": "SecurityGroupStack/EcsSG/from EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081"
+   }
+  },
+  "EcsSGEcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE4498081from628CD37E": {
+   "Type": "AWS::EC2::SecurityGroupEgress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "DestinationSecurityGroupId": {
+     "Fn::GetAtt": [
+      "EcsSGAFCFCDDA",
+      "GroupId"
+     ]
+    },
+    "FromPort": 8081,
+    "GroupId": {
+     "Fn::ImportValue": "EcsClusterStack:ExportsOutputFnGetAttSpringBootFargateServiceLBSecurityGroup631B6D5FGroupId2A072C90"
+    },
+    "IpProtocol": "tcp",
+    "ToPort": 8081
+   },
+   "Metadata": {
+    "aws:cdk:path": "SecurityGroupStack/EcsSG/EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081 from"
+   }
+  },
+  "LbSGD6245544": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "SecurityGroupStack/LbSG",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SecurityGroupStack/LbSG/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/33IQQrCMBBA0bN0n0zbgHiAIqLL9gAyTkcZq4lkEouU3l2qy4Kr/3kO6o2DqsBRLfWDvcsZpi4hDQZHPTE5mDqmHCW99zHkp2ku/j8c/DWy6sp3X54Xb1lDjsTLN8H3kiT42RzxhWW9hQpccVMRG7NP8mBof/0AVeuyFK0AAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "SecurityGroupStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Outputs": {
+  "ExportsOutputFnGetAttRdsSG7A20FFA2GroupId577EBECA": {
+   "Value": {
+    "Fn::GetAtt": [
+     "RdsSG7A20FFA2",
+     "GroupId"
+    ]
+   },
+   "Export": {
+    "Name": "SecurityGroupStack:ExportsOutputFnGetAttRdsSG7A20FFA2GroupId577EBECA"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,718 @@
+{
+ "Resources": {
+  "navalogvpcFEC92251": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "VpcStack/nava-log-vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/Resource"
+   }
+  },
+  "navalogvpcPublicSubnet1SubnetD68AA293": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.0.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "VpcStack/nava-log-vpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "navalogvpcFEC92251"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PublicSubnet1/Subnet"
+   }
+  },
+  "navalogvpcPublicSubnet1RouteTableA5038510": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "VpcStack/nava-log-vpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "navalogvpcFEC92251"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PublicSubnet1/RouteTable"
+   }
+  },
+  "navalogvpcPublicSubnet1RouteTableAssociation2C52116D": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "navalogvpcPublicSubnet1RouteTableA5038510"
+    },
+    "SubnetId": {
+     "Ref": "navalogvpcPublicSubnet1SubnetD68AA293"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "navalogvpcPublicSubnet1DefaultRoute6B8084D5": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "navalogvpcIGW3537970D"
+    },
+    "RouteTableId": {
+     "Ref": "navalogvpcPublicSubnet1RouteTableA5038510"
+    }
+   },
+   "DependsOn": [
+    "navalogvpcVPCGWD6206846"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "navalogvpcPublicSubnet1EIPECB8276F": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "VpcStack/nava-log-vpc/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PublicSubnet1/EIP"
+   }
+  },
+  "navalogvpcPublicSubnet1NATGateway93CBA162": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "navalogvpcPublicSubnet1EIPECB8276F",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "navalogvpcPublicSubnet1SubnetD68AA293"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "VpcStack/nava-log-vpc/PublicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "navalogvpcPublicSubnet1DefaultRoute6B8084D5",
+    "navalogvpcPublicSubnet1RouteTableAssociation2C52116D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PublicSubnet1/NATGateway"
+   }
+  },
+  "navalogvpcPublicSubnet2SubnetA7FA7806": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.64.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "VpcStack/nava-log-vpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "navalogvpcFEC92251"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PublicSubnet2/Subnet"
+   }
+  },
+  "navalogvpcPublicSubnet2RouteTableBB4CACD8": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "VpcStack/nava-log-vpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "navalogvpcFEC92251"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PublicSubnet2/RouteTable"
+   }
+  },
+  "navalogvpcPublicSubnet2RouteTableAssociationF03877C2": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "navalogvpcPublicSubnet2RouteTableBB4CACD8"
+    },
+    "SubnetId": {
+     "Ref": "navalogvpcPublicSubnet2SubnetA7FA7806"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "navalogvpcPublicSubnet2DefaultRoute0C96B456": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "navalogvpcIGW3537970D"
+    },
+    "RouteTableId": {
+     "Ref": "navalogvpcPublicSubnet2RouteTableBB4CACD8"
+    }
+   },
+   "DependsOn": [
+    "navalogvpcVPCGWD6206846"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "navalogvpcPrivateSubnet1Subnet755CCBA7": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.128.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "VpcStack/nava-log-vpc/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "navalogvpcFEC92251"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PrivateSubnet1/Subnet"
+   }
+  },
+  "navalogvpcPrivateSubnet1RouteTable25117053": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "VpcStack/nava-log-vpc/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "navalogvpcFEC92251"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PrivateSubnet1/RouteTable"
+   }
+  },
+  "navalogvpcPrivateSubnet1RouteTableAssociation70B81C8D": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "navalogvpcPrivateSubnet1RouteTable25117053"
+    },
+    "SubnetId": {
+     "Ref": "navalogvpcPrivateSubnet1Subnet755CCBA7"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PrivateSubnet1/RouteTableAssociation"
+   }
+  },
+  "navalogvpcPrivateSubnet1DefaultRoute917FAC3F": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "navalogvpcPublicSubnet1NATGateway93CBA162"
+    },
+    "RouteTableId": {
+     "Ref": "navalogvpcPrivateSubnet1RouteTable25117053"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PrivateSubnet1/DefaultRoute"
+   }
+  },
+  "navalogvpcPrivateSubnet2SubnetAF0596B1": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.192.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "VpcStack/nava-log-vpc/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "navalogvpcFEC92251"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PrivateSubnet2/Subnet"
+   }
+  },
+  "navalogvpcPrivateSubnet2RouteTable5AED21A1": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "VpcStack/nava-log-vpc/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "navalogvpcFEC92251"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PrivateSubnet2/RouteTable"
+   }
+  },
+  "navalogvpcPrivateSubnet2RouteTableAssociationB24E3190": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "navalogvpcPrivateSubnet2RouteTable5AED21A1"
+    },
+    "SubnetId": {
+     "Ref": "navalogvpcPrivateSubnet2SubnetAF0596B1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PrivateSubnet2/RouteTableAssociation"
+   }
+  },
+  "navalogvpcPrivateSubnet2DefaultRoute9A096B07": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "navalogvpcPublicSubnet1NATGateway93CBA162"
+    },
+    "RouteTableId": {
+     "Ref": "navalogvpcPrivateSubnet2RouteTable5AED21A1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/PrivateSubnet2/DefaultRoute"
+   }
+  },
+  "navalogvpcIGW3537970D": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "VpcStack/nava-log-vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/IGW"
+   }
+  },
+  "navalogvpcVPCGWD6206846": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "navalogvpcIGW3537970D"
+    },
+    "VpcId": {
+     "Ref": "navalogvpcFEC92251"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/nava-log-vpc/VPCGW"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02OQQuCQBCFf4v3dVMhOotE2CFEo2uM60STuhvubBLRf4/N0E7vm8fjzUtkvE5kFMBoQ9W0YUe1fFUMqhUw2jOqRL5OdyWyiz4VmShc3ZGqXK2RvbdQaRzjEeoOF3/xUmuNImAyeg572OaFlwPwDhhHeIpioAcwLsW5Zhw0zoFpye9KmUFde9T8FiVa4wb17f3nzOiG/Oe32MMDVvFGRjIJbpYoHJxm6lGWk34AWN3AKg4BAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "VpcStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Outputs": {
+  "ExportsOutputRefnavalogvpcFEC92251ECAE862B": {
+   "Value": {
+    "Ref": "navalogvpcFEC92251"
+   },
+   "Export": {
+    "Name": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+   }
+  },
+  "ExportsOutputRefnavalogvpcPrivateSubnet1Subnet755CCBA7E36229AD": {
+   "Value": {
+    "Ref": "navalogvpcPrivateSubnet1Subnet755CCBA7"
+   },
+   "Export": {
+    "Name": "VpcStack:ExportsOutputRefnavalogvpcPrivateSubnet1Subnet755CCBA7E36229AD"
+   }
+  },
+  "ExportsOutputRefnavalogvpcPrivateSubnet2SubnetAF0596B1E9F0B841": {
+   "Value": {
+    "Ref": "navalogvpcPrivateSubnet2SubnetAF0596B1"
+   },
+   "Export": {
+    "Name": "VpcStack:ExportsOutputRefnavalogvpcPrivateSubnet2SubnetAF0596B1E9F0B841"
+   }
+  },
+  "ExportsOutputRefnavalogvpcPublicSubnet1SubnetD68AA293F159CD55": {
+   "Value": {
+    "Ref": "navalogvpcPublicSubnet1SubnetD68AA293"
+   },
+   "Export": {
+    "Name": "VpcStack:ExportsOutputRefnavalogvpcPublicSubnet1SubnetD68AA293F159CD55"
+   }
+  },
+  "ExportsOutputRefnavalogvpcPublicSubnet2SubnetA7FA78063CF0E934": {
+   "Value": {
+    "Ref": "navalogvpcPublicSubnet2SubnetA7FA7806"
+   },
+   "Export": {
+    "Name": "VpcStack:ExportsOutputRefnavalogvpcPublicSubnet2SubnetA7FA78063CF0E934"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

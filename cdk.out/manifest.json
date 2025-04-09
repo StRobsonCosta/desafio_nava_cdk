@@ -1,0 +1,764 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "VpcStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "VpcStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "VpcStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "VpcStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6e879d10652382899fa7fe3885d4131cc30f0839f997afbb595b65d110ed81b9.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "VpcStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "VpcStack.assets"
+      ],
+      "metadata": {
+        "/VpcStack/nava-log-vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcFEC92251"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PublicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPublicSubnet1SubnetD68AA293"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PublicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPublicSubnet1RouteTableA5038510"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PublicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPublicSubnet1RouteTableAssociation2C52116D"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PublicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPublicSubnet1DefaultRoute6B8084D5"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PublicSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPublicSubnet1EIPECB8276F"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PublicSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPublicSubnet1NATGateway93CBA162"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PublicSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPublicSubnet2SubnetA7FA7806"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PublicSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPublicSubnet2RouteTableBB4CACD8"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PublicSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPublicSubnet2RouteTableAssociationF03877C2"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PublicSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPublicSubnet2DefaultRoute0C96B456"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PrivateSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPrivateSubnet1Subnet755CCBA7"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PrivateSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPrivateSubnet1RouteTable25117053"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PrivateSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPrivateSubnet1RouteTableAssociation70B81C8D"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PrivateSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPrivateSubnet1DefaultRoute917FAC3F"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PrivateSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPrivateSubnet2SubnetAF0596B1"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PrivateSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPrivateSubnet2RouteTable5AED21A1"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PrivateSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPrivateSubnet2RouteTableAssociationB24E3190"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/PrivateSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcPrivateSubnet2DefaultRoute9A096B07"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcIGW3537970D"
+          }
+        ],
+        "/VpcStack/nava-log-vpc/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogvpcVPCGWD6206846"
+          }
+        ],
+        "/VpcStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/VpcStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/VpcStack/Exports/Output{\"Ref\":\"navalogvpcFEC92251\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+          }
+        ],
+        "/VpcStack/Exports/Output{\"Ref\":\"navalogvpcPrivateSubnet1Subnet755CCBA7\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefnavalogvpcPrivateSubnet1Subnet755CCBA7E36229AD"
+          }
+        ],
+        "/VpcStack/Exports/Output{\"Ref\":\"navalogvpcPrivateSubnet2SubnetAF0596B1\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefnavalogvpcPrivateSubnet2SubnetAF0596B1E9F0B841"
+          }
+        ],
+        "/VpcStack/Exports/Output{\"Ref\":\"navalogvpcPublicSubnet1SubnetD68AA293\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefnavalogvpcPublicSubnet1SubnetD68AA293F159CD55"
+          }
+        ],
+        "/VpcStack/Exports/Output{\"Ref\":\"navalogvpcPublicSubnet2SubnetA7FA7806\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefnavalogvpcPublicSubnet2SubnetA7FA78063CF0E934"
+          }
+        ],
+        "/VpcStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/VpcStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "VpcStack"
+    },
+    "SecurityGroupStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "SecurityGroupStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "SecurityGroupStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "SecurityGroupStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/316b195ed6fbed832472e3ff464bd35adffb25b3508879c516447c1bdf8962fa.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "SecurityGroupStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "VpcStack",
+        "EcsClusterStack",
+        "SecurityGroupStack.assets"
+      ],
+      "metadata": {
+        "/SecurityGroupStack/RdsSG/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RdsSG7A20FFA2"
+          }
+        ],
+        "/SecurityGroupStack/RdsSG/from SecurityGroupStackEcsSG35FA6234:5432": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RdsSGfromSecurityGroupStackEcsSG35FA62345432D2A0925B"
+          }
+        ],
+        "/SecurityGroupStack/EcsSG/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EcsSGAFCFCDDA"
+          }
+        ],
+        "/SecurityGroupStack/EcsSG/from EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EcsSGfromEcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE44980813821913B"
+          }
+        ],
+        "/SecurityGroupStack/EcsSG/EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081 from": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EcsSGEcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE4498081from628CD37E"
+          }
+        ],
+        "/SecurityGroupStack/LbSG/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LbSGD6245544"
+          }
+        ],
+        "/SecurityGroupStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/SecurityGroupStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/SecurityGroupStack/Exports/Output{\"Fn::GetAtt\":[\"RdsSG7A20FFA2\",\"GroupId\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttRdsSG7A20FFA2GroupId577EBECA"
+          }
+        ],
+        "/SecurityGroupStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/SecurityGroupStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "SecurityGroupStack"
+    },
+    "RdsStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "RdsStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "RdsStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "RdsStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a32945314fe96723c677d57699821866f654be62aacb7a317c95c2b91290ed4d.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "RdsStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "VpcStack",
+        "SecurityGroupStack",
+        "RdsStack.assets"
+      ],
+      "metadata": {
+        "/RdsStack/NavaLogDbSecret/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NavaLogDbSecretA61081F6"
+          }
+        ],
+        "/RdsStack/NavaLogDbSecret/Attachment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NavaLogDbSecretAttachment7A0A4EEB"
+          }
+        ],
+        "/RdsStack/NavaLogDbInstance/SubnetGroup/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NavaLogDbInstanceSubnetGroupEBA1525C"
+          }
+        ],
+        "/RdsStack/NavaLogDbInstance/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NavaLogDbInstance6D593EF8"
+          }
+        ],
+        "/RdsStack/RdsEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RdsEndpoint"
+          }
+        ],
+        "/RdsStack/DbSecretName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DbSecretName"
+          }
+        ],
+        "/RdsStack/DbSecretPassword": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DbSecretPassword"
+          }
+        ],
+        "/RdsStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/RdsStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/RdsStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/RdsStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "RdsStack"
+    },
+    "DynamoDbStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "DynamoDbStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "DynamoDbStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "DynamoDbStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/ae812513d0366cb414ec12aa21bcb51a96b0ba0f8b06e8b7e86be0f92a4fe235.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "DynamoDbStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "DynamoDbStack.assets"
+      ],
+      "metadata": {
+        "/DynamoDbStack/nava-log": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "navalog37BF5FE3"
+            }
+          }
+        ],
+        "/DynamoDbStack/nava-log/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalog37BF5FE3"
+          }
+        ],
+        "/DynamoDbStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/DynamoDbStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/DynamoDbStack/Exports/Output{\"Ref\":\"navalog37BF5FE3\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefnavalog37BF5FE37DB565A1"
+          }
+        ],
+        "/DynamoDbStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/DynamoDbStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "DynamoDbStack"
+    },
+    "EcrStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "EcrStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "EcrStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "EcrStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/dbbe50059d9d624e990c1647485cfa0ac3dd70544c6bdf08226b826769639e58.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "EcrStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "EcrStack.assets"
+      ],
+      "metadata": {
+        "/EcrStack/nava-log-ecr/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "navalogecrAA539A37"
+          }
+        ],
+        "/EcrStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/EcrStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/EcrStack/Exports/Output{\"Fn::GetAtt\":[\"navalogecrAA539A37\",\"Arn\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttnavalogecrAA539A37Arn8E805FAC"
+          }
+        ],
+        "/EcrStack/Exports/Output{\"Ref\":\"navalogecrAA539A37\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefnavalogecrAA539A372A777D50"
+          }
+        ],
+        "/EcrStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/EcrStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "EcrStack"
+    },
+    "EcsClusterStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "EcsClusterStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "EcsClusterStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "EcsClusterStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f194f95f95a9bd23a4278cf9dfc9ae020e6df0fe46ff093b3804a1b663e08a56.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "EcsClusterStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "VpcStack",
+        "EcrStack",
+        "DynamoDbStack",
+        "EcsClusterStack.assets"
+      ],
+      "metadata": {
+        "/EcsClusterStack/EcsCluster/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EcsCluster97242B84"
+          }
+        ],
+        "/EcsClusterStack/EcsExecutionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EcsExecutionRoleFD93B7A2"
+          }
+        ],
+        "/EcsClusterStack/EcsExecutionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EcsExecutionRoleDefaultPolicy9114F99B"
+          }
+        ],
+        "/EcsClusterStack/EcsTaskRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EcsTaskRole8DFA0181"
+          }
+        ],
+        "/EcsClusterStack/TaskDef/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TaskDef54694570"
+          }
+        ],
+        "/EcsClusterStack/SpringBootFargateService/LB/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpringBootFargateServiceLB40691197"
+          }
+        ],
+        "/EcsClusterStack/SpringBootFargateService/LB/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpringBootFargateServiceLBSecurityGroup631B6D5F"
+          }
+        ],
+        "/EcsClusterStack/SpringBootFargateService/LB/SecurityGroup/to EcsClusterStackSpringBootFargateServiceSecurityGroupE2D61429:8081": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpringBootFargateServiceLBSecurityGrouptoEcsClusterStackSpringBootFargateServiceSecurityGroupE2D61429808163316449"
+          }
+        ],
+        "/EcsClusterStack/SpringBootFargateService/LB/PublicListener/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpringBootFargateServiceLBPublicListener695334B1"
+          }
+        ],
+        "/EcsClusterStack/SpringBootFargateService/LB/PublicListener/ECSGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpringBootFargateServiceLBPublicListenerECSGroup1F3F45D8"
+          }
+        ],
+        "/EcsClusterStack/SpringBootFargateService/LoadBalancerDNS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpringBootFargateServiceLoadBalancerDNSBA91AD84"
+          }
+        ],
+        "/EcsClusterStack/SpringBootFargateService/ServiceURL": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpringBootFargateServiceServiceURL065F0C07"
+          }
+        ],
+        "/EcsClusterStack/SpringBootFargateService/Service/Service": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpringBootFargateService19387671"
+          }
+        ],
+        "/EcsClusterStack/SpringBootFargateService/Service/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpringBootFargateServiceSecurityGroupA68A4C3D"
+          }
+        ],
+        "/EcsClusterStack/SpringBootFargateService/Service/SecurityGroup/from EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SpringBootFargateServiceSecurityGroupfromEcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE4498081AE059874"
+          }
+        ],
+        "/EcsClusterStack/EcsLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EcsLogGroupD0138CE7"
+          }
+        ],
+        "/EcsClusterStack/LoadBalancerDNS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LoadBalancerDNS"
+          }
+        ],
+        "/EcsClusterStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/EcsClusterStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/EcsClusterStack/Exports/Output{\"Fn::GetAtt\":[\"SpringBootFargateServiceLBSecurityGroup631B6D5F\",\"GroupId\"]}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputFnGetAttSpringBootFargateServiceLBSecurityGroup631B6D5FGroupId2A072C90"
+          }
+        ],
+        "/EcsClusterStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/EcsClusterStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "EcsClusterStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

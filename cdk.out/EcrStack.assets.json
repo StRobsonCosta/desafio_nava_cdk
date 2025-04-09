@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "dbbe50059d9d624e990c1647485cfa0ac3dd70544c6bdf08226b826769639e58": {
+      "source": {
+        "path": "EcrStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "dbbe50059d9d624e990c1647485cfa0ac3dd70544c6bdf08226b826769639e58.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

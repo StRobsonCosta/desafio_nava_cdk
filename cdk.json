@@ -1,0 +1,7 @@
+{
+  "app": "mvn -e -q compile exec:java -Dexec.mainClass=com.desafio.nava_log_infra.App",
+  "context": {
+    "@aws-cdk/core:newStyleStackSynthesis": true
+  }
+}
+

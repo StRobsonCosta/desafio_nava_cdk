@@ -1,0 +1,804 @@
+{
+ "Resources": {
+  "EcsCluster97242B84": {
+   "Type": "AWS::ECS::Cluster",
+   "Properties": {
+    "ClusterName": "nava-log-cluster"
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/EcsCluster/Resource"
+   }
+  },
+  "EcsExecutionRoleFD93B7A2": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/CloudWatchLogsFullAccess"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/EcsExecutionRole/Resource"
+   }
+  },
+  "EcsExecutionRoleDefaultPolicy9114F99B": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::ImportValue": "EcrStack:ExportsOutputFnGetAttnavalogecrAA539A37Arn8E805FAC"
+       }
+      },
+      {
+       "Action": "ecr:GetAuthorizationToken",
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "EcsExecutionRoleDefaultPolicy9114F99B",
+    "Roles": [
+     {
+      "Ref": "EcsExecutionRoleFD93B7A2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/EcsExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "EcsTaskRole8DFA0181": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonDynamoDBFullAccess"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/EcsTaskRole/Resource"
+   }
+  },
+  "TaskDef54694570": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Cpu": 512,
+      "Environment": [
+       {
+        "Name": "DYNAMODB_TABLE_NAME",
+        "Value": {
+         "Fn::ImportValue": "DynamoDbStack:ExportsOutputRefnavalog37BF5FE37DB565A1"
+        }
+       },
+       {
+        "Name": "DB_PASSWORD",
+        "Value": {
+         "Fn::ImportValue": "DbSecretPassword"
+        }
+       },
+       {
+        "Name": "DB_URL",
+        "Value": {
+         "Fn::Join": [
+          "",
+          [
+           "jdbc:postgresql://",
+           {
+            "Fn::ImportValue": "RdsEndpoint"
+           },
+           ":5432/nava_log"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "DB_USERNAME",
+        "Value": {
+         "Fn::ImportValue": "DbSecretName"
+        }
+       }
+      ],
+      "Essential": true,
+      "Image": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Fn::Select": [
+           4,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::ImportValue": "EcrStack:ExportsOutputFnGetAttnavalogecrAA539A37Arn8E805FAC"
+             }
+            ]
+           }
+          ]
+         },
+         ".dkr.ecr.",
+         {
+          "Fn::Select": [
+           3,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::ImportValue": "EcrStack:ExportsOutputFnGetAttnavalogecrAA539A37Arn8E805FAC"
+             }
+            ]
+           }
+          ]
+         },
+         ".",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/",
+         {
+          "Fn::ImportValue": "EcrStack:ExportsOutputRefnavalogecrAA539A372A777D50"
+         },
+         ":latest"
+        ]
+       ]
+      },
+      "Memory": 1024,
+      "Name": "SpringBootContainer",
+      "PortMappings": [
+       {
+        "ContainerPort": 8081,
+        "Protocol": "tcp"
+       }
+      ]
+     },
+     {
+      "Command": [
+       "--verbose"
+      ],
+      "Cpu": 128,
+      "Essential": true,
+      "Image": "wiremock/wiremock:latest",
+      "Memory": 256,
+      "Name": "nava-log-wiremock",
+      "PortMappings": [
+       {
+        "ContainerPort": 9090,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "1024",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "EcsExecutionRoleFD93B7A2",
+      "Arn"
+     ]
+    },
+    "Family": "EcsClusterStackTaskDef6310E1EE",
+    "Memory": "2048",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "EcsTaskRole8DFA0181",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/TaskDef/Resource"
+   }
+  },
+  "SpringBootFargateServiceLB40691197": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "SpringBootFargateServiceLBSecurityGroup631B6D5F",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcPublicSubnet1SubnetD68AA293F159CD55"
+     },
+     {
+      "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcPublicSubnet2SubnetA7FA78063CF0E934"
+     }
+    ],
+    "Type": "application"
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/SpringBootFargateService/LB/Resource"
+   }
+  },
+  "SpringBootFargateServiceLBSecurityGroup631B6D5F": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Automatically created Security Group for ELB EcsClusterStackSpringBootFargateServiceLBBFB8A185",
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow from anyone on port 80",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/SpringBootFargateService/LB/SecurityGroup/Resource"
+   }
+  },
+  "SpringBootFargateServiceLBSecurityGrouptoEcsClusterStackSpringBootFargateServiceSecurityGroupE2D61429808163316449": {
+   "Type": "AWS::EC2::SecurityGroupEgress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "DestinationSecurityGroupId": {
+     "Fn::GetAtt": [
+      "SpringBootFargateServiceSecurityGroupA68A4C3D",
+      "GroupId"
+     ]
+    },
+    "FromPort": 8081,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "SpringBootFargateServiceLBSecurityGroup631B6D5F",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "ToPort": 8081
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/SpringBootFargateService/LB/SecurityGroup/to EcsClusterStackSpringBootFargateServiceSecurityGroupE2D61429:8081"
+   }
+  },
+  "SpringBootFargateServiceLBPublicListener695334B1": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "SpringBootFargateServiceLBPublicListenerECSGroup1F3F45D8"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "SpringBootFargateServiceLB40691197"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/SpringBootFargateService/LB/PublicListener/Resource"
+   }
+  },
+  "SpringBootFargateServiceLBPublicListenerECSGroup1F3F45D8": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/SpringBootFargateService/LB/PublicListener/ECSGroup/Resource"
+   }
+  },
+  "SpringBootFargateService19387671": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "EcsCluster97242B84"
+    },
+    "DeploymentConfiguration": {
+     "Alarms": {
+      "AlarmNames": [],
+      "Enable": false,
+      "Rollback": false
+     },
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 2,
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "SpringBootContainer",
+      "ContainerPort": 8081,
+      "TargetGroupArn": {
+       "Ref": "SpringBootFargateServiceLBPublicListenerECSGroup1F3F45D8"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "SpringBootFargateServiceSecurityGroupA68A4C3D",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcPrivateSubnet1Subnet755CCBA7E36229AD"
+       },
+       {
+        "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcPrivateSubnet2SubnetAF0596B1E9F0B841"
+       }
+      ]
+     }
+    },
+    "ServiceName": "nava-log-service",
+    "TaskDefinition": {
+     "Ref": "TaskDef54694570"
+    }
+   },
+   "DependsOn": [
+    "EcsTaskRole8DFA0181",
+    "SpringBootFargateServiceLBPublicListenerECSGroup1F3F45D8",
+    "SpringBootFargateServiceLBPublicListener695334B1"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/SpringBootFargateService/Service/Service"
+   }
+  },
+  "SpringBootFargateServiceSecurityGroupA68A4C3D": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "EcsClusterStack/SpringBootFargateService/Service/SecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "VpcStack:ExportsOutputRefnavalogvpcFEC92251ECAE862B"
+    }
+   },
+   "DependsOn": [
+    "EcsTaskRole8DFA0181"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/SpringBootFargateService/Service/SecurityGroup/Resource"
+   }
+  },
+  "SpringBootFargateServiceSecurityGroupfromEcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE4498081AE059874": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "FromPort": 8081,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "SpringBootFargateServiceSecurityGroupA68A4C3D",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "SpringBootFargateServiceLBSecurityGroup631B6D5F",
+      "GroupId"
+     ]
+    },
+    "ToPort": 8081
+   },
+   "DependsOn": [
+    "EcsTaskRole8DFA0181"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/SpringBootFargateService/Service/SecurityGroup/from EcsClusterStackSpringBootFargateServiceLBSecurityGroup628CE449:8081"
+   }
+  },
+  "EcsLogGroupD0138CE7": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "SpringBootEcsLogs",
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/EcsLogGroup/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/32R3U4CMRCFn4X7UmET47WiGA2JBrgnQ3fYjJR205lCSLPvbrbLkhWNV3Pm6zn9mRZ6el/oyQhOPDblfmxpq9NKwOwVnHiT0LBOMxtZMKjZzvVyDqECwTXw/hl35EjIu9ZwS7wTIIdhwC7ZFYYjGWxDF9kogoNOS28zzfXTWzLntu1Uo9DwpgYRDI71Y11bMtDuu/BQPoEFZ7C8OQItsJCxHsptdpCrjoVOf6fzQ3/0Qx+xoLt4ej1YX0OoUF6Dj3U3jmvb3rzQaYUmBpLz1fI/eKkCMv/Cby7zRllfsU4LX13jvW4atUT2MXQz/ohSR8lzHdCZd2X+lUa9wxHupg96oovRFxONQ3RCB9TLrn4D2dYWbysCAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "EcsClusterStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "SpringBootFargateServiceLoadBalancerDNSBA91AD84": {
+   "Value": {
+    "Fn::GetAtt": [
+     "SpringBootFargateServiceLB40691197",
+     "DNSName"
+    ]
+   }
+  },
+  "SpringBootFargateServiceServiceURL065F0C07": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "http://",
+      {
+       "Fn::GetAtt": [
+        "SpringBootFargateServiceLB40691197",
+        "DNSName"
+       ]
+      }
+     ]
+    ]
+   }
+  },
+  "LoadBalancerDNS": {
+   "Value": {
+    "Fn::GetAtt": [
+     "SpringBootFargateServiceLB40691197",
+     "DNSName"
+    ]
+   }
+  },
+  "ExportsOutputFnGetAttSpringBootFargateServiceLBSecurityGroup631B6D5FGroupId2A072C90": {
+   "Value": {
+    "Fn::GetAtt": [
+     "SpringBootFargateServiceLBSecurityGroup631B6D5F",
+     "GroupId"
+    ]
+   },
+   "Export": {
+    "Name": "EcsClusterStack:ExportsOutputFnGetAttSpringBootFargateServiceLBSecurityGroup631B6D5FGroupId2A072C90"
+   }
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

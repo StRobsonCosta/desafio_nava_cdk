@@ -1,0 +1,19 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "316b195ed6fbed832472e3ff464bd35adffb25b3508879c516447c1bdf8962fa": {
+      "source": {
+        "path": "SecurityGroupStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "316b195ed6fbed832472e3ff464bd35adffb25b3508879c516447c1bdf8962fa.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
